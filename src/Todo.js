@@ -10,9 +10,13 @@ class Todo extends React.Component {
       items: []
     };
   }
+  componentDidMount() {
+    this.setState({
+      items: JSON.parse(localStorage.getItem("reacct_todolist")) || []
+    });
+  }
   handleKeyUp = event => {
     if (event.key === "Enter") {
-      console.log("enter press here! ");
       this.onAddItem();
     }
   };
@@ -22,16 +26,34 @@ class Todo extends React.Component {
   onAddItem = () => {
     this.setState(state => {
       const items = [...state.items, state.value];
+      localStorage.setItem("reacct_todolist", JSON.stringify(items));
       return {
         value: "",
         items
       };
     });
   };
+  onDeleteItem(deleteItemIndex) {
+    let new_items = this.state.items.filter((item, index) => {
+      return deleteItemIndex !== index;
+    });
+    localStorage.setItem("reacct_todolist", JSON.stringify(new_items));
+    this.setState({
+      items: JSON.parse(localStorage.getItem("reacct_todolist"))
+    });
+  }
 
   render() {
     const listItems = this.state.items.map((item, index) => (
-      <li key={index}>{item}</li>
+      <li key={index}>
+        {item}
+        <button
+          onClick={() => this.onDeleteItem(index)}
+          style={{ marginLeft: 10 + "px" }}
+        >
+          刪除
+        </button>
+      </li>
     ));
     return (
       <div>
