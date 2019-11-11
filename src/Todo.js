@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
 // import './App.css';
 
 class Todo extends React.Component {
@@ -16,7 +16,7 @@ class Todo extends React.Component {
     });
   }
   handleKeyUp = event => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && this.state.value !== "") {
       this.onAddItem();
     }
   };
